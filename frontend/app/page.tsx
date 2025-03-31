@@ -1,184 +1,397 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import Navigation from "@/components/Navigation";
 import { mockNewsFeed, mockCourses } from "../lib/mock-data";
 import Link from "next/link";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+} from "@/components/ui/card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import {
+  ThumbsUp,
+  MessageCircle,
+  Share2,
+  BookOpen,
+  UserPlus,
+  Hash,
+} from "lucide-react";
 
 export default function Home() {
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 20);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   return (
-    <main className="min-h-screen bg-gray-50">
-      <Navigation />
+    <main className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-950">
+      <Navigation scrolled={scrolled} />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="flex flex-col md:flex-row gap-8">
-          {/* Main Feed */}
-          <div className="md:w-2/3">
-            <h1 className="text-2xl font-bold text-gray-900 mb-6">
-              Tech News Feed
+      {/* Hero Section */}
+      <div className="relative bg-gradient-to-r from-indigo-600 to-purple-600 overflow-hidden">
+        <div className="absolute inset-0 opacity-10">
+          <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%">
+            <defs>
+              <pattern
+                id="grid"
+                width="40"
+                height="40"
+                patternUnits="userSpaceOnUse"
+              >
+                <path
+                  d="M 40 0 L 0 0 0 40"
+                  fill="none"
+                  stroke="white"
+                  strokeWidth="1"
+                />
+              </pattern>
+            </defs>
+            <rect width="100%" height="100%" fill="url(#grid)" />
+          </svg>
+        </div>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16 lg:py-20 relative">
+          <div className="max-w-2xl text-white">
+            <h1 className="text-4xl md:text-5xl font-bold mb-3">
+              Welcome to Learnopoly
             </h1>
-
-            <div className="space-y-6">
-              {mockNewsFeed.map((post) => (
-                <div key={post.id} className="bg-white shadow rounded-lg p-6">
-                  <div className="flex items-center mb-4">
-                    <div className="h-10 w-10 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-600 font-semibold">
-                      {post.author.substring(0, 2)}
-                    </div>
-                    <div className="ml-3">
-                      <p className="text-sm font-medium text-gray-900">
-                        {post.author}
-                      </p>
-                      <p className="text-xs text-gray-500">{post.timestamp}</p>
-                    </div>
-                  </div>
-                  <h2 className="text-lg font-semibold text-gray-900 mb-2">
-                    {post.title}
-                  </h2>
-                  <p className="text-gray-600 mb-4">{post.content}</p>
-                  <div className="flex items-center text-sm text-gray-500 gap-4">
-                    <button className="flex items-center hover:text-indigo-600">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="h-5 w-5 mr-1"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M14 10h4.764a2 2 0 011.789 2.894l-3.5 7A2 2 0 0115.263 21h-4.017c-.163 0-.326-.02-.485-.06L7 20m7-10V5a2 2 0 00-2-2h-.095c-.5 0-.905.405-.905.905 0 .714-.211 1.412-.608 2.006L7 11v9m7-10h-2M7 20H5a2 2 0 01-2-2v-6a2 2 0 012-2h2.5"
-                        />
-                      </svg>
-                      {post.likes}
-                    </button>
-                    <button className="flex items-center hover:text-indigo-600">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="h-5 w-5 mr-1"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
-                        />
-                      </svg>
-                      {post.comments}
-                    </button>
-                    <button className="flex items-center hover:text-indigo-600">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="h-5 w-5 mr-1"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"
-                        />
-                      </svg>
-                      Share
-                    </button>
-                  </div>
-                </div>
-              ))}
+            <p className="text-xl opacity-90 mb-6">
+              Your unified platform for tech learning, networking, and staying
+              updated with the latest industry trends.
+            </p>
+            <div className="flex space-x-4">
+              <Button
+                size="lg"
+                className="bg-white text-indigo-700 hover:bg-gray-100"
+              >
+                Explore Courses
+              </Button>
+              <Button
+                size="lg"
+                variant="outline"
+                className="border-white text-white hover:bg-white/10"
+              >
+                Join Community
+              </Button>
             </div>
+          </div>
+        </div>
+        <div className="absolute bottom-0 w-full h-16 bg-gradient-to-t from-gray-50 to-transparent dark:from-gray-900"></div>
+      </div>
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 relative -mt-10">
+        <div className="flex flex-col lg:flex-row gap-8">
+          {/* Main Content Area */}
+          <div className="lg:w-2/3">
+            <Tabs defaultValue="feed" className="w-full">
+              <div className="flex justify-between items-center mb-6">
+                <TabsList className="bg-white dark:bg-gray-800 p-1 rounded-lg shadow-sm">
+                  <TabsTrigger
+                    value="feed"
+                    className="data-[state=active]:bg-indigo-50 data-[state=active]:text-indigo-700 dark:data-[state=active]:bg-gray-700"
+                  >
+                    Latest Feed
+                  </TabsTrigger>
+                  <TabsTrigger
+                    value="trending"
+                    className="data-[state=active]:bg-indigo-50 data-[state=active]:text-indigo-700 dark:data-[state=active]:bg-gray-700"
+                  >
+                    Trending
+                  </TabsTrigger>
+                  <TabsTrigger
+                    value="following"
+                    className="data-[state=active]:bg-indigo-50 data-[state=active]:text-indigo-700 dark:data-[state=active]:bg-gray-700"
+                  >
+                    Following
+                  </TabsTrigger>
+                </TabsList>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="hidden md:flex items-center gap-2"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    className="lucide lucide-plus-circle"
+                  >
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <path d="M8 12h8"></path>
+                    <path d="M12 8v8"></path>
+                  </svg>
+                  Create Post
+                </Button>
+              </div>
+
+              <TabsContent value="feed" className="space-y-6 mt-0">
+                {mockNewsFeed.map((post) => (
+                  <FeedCard key={post.id} post={post} />
+                ))}
+              </TabsContent>
+
+              <TabsContent value="trending" className="space-y-6 mt-0">
+                <div className="bg-yellow-50 border border-yellow-100 rounded-lg p-4 text-yellow-800 flex items-center gap-3">
+                  <p>Discover what's popular right now in tech communities.</p>
+                </div>
+                {mockNewsFeed.slice(0, 3).map((post) => (
+                  <FeedCard
+                    key={post.id}
+                    post={{
+                      ...post,
+                      likes: post.likes * 3,
+                      comments: post.comments * 2,
+                    }}
+                  />
+                ))}
+              </TabsContent>
+
+              <TabsContent value="following" className="space-y-6 mt-0">
+                <div className="bg-indigo-50 border border-indigo-100 rounded-lg p-4 text-indigo-800 flex items-center gap-3">
+                  <UserPlus className="h-5 w-5 text-indigo-600" />
+                  <p>Connect with more professionals to customize your feed.</p>
+                </div>
+                {mockNewsFeed.slice(2, 4).map((post) => (
+                  <FeedCard key={post.id} post={post} />
+                ))}
+              </TabsContent>
+            </Tabs>
           </div>
 
           {/* Sidebar */}
-          <div className="md:w-1/3">
-            <div className="bg-white shadow rounded-lg p-6 mb-6">
-              <h2 className="text-lg font-semibold text-gray-900 mb-4">
-                Trending Courses
-              </h2>
-              <div className="space-y-4">
-                {mockCourses.slice(0, 3).map((course) => (
-                  <Link
-                    key={course.id}
-                    href={`/courses/${course.id}`}
-                    className="block group"
-                  >
-                    <div className="flex items-start">
-                      <div className="flex-shrink-0 h-12 w-12 rounded bg-indigo-100 flex items-center justify-center text-indigo-600">
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          className="h-6 w-6"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          stroke="currentColor"
-                        >
-                          <path d="M12 14l9-5-9-5-9 5 9 5z" />
-                          <path d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z" />
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14zm-4 6v-7.5l4-2.222"
-                          />
-                        </svg>
-                      </div>
-                      <div className="ml-4">
-                        <h3 className="text-sm font-medium text-gray-900 group-hover:text-indigo-600">
-                          {course.title}
-                        </h3>
-                        <p className="text-xs text-gray-500 mt-1">
-                          {course.instructor} • {course.level}
-                        </p>
-                      </div>
-                    </div>
-                  </Link>
-                ))}
-                <Link
-                  href="/courses"
-                  className="text-sm text-indigo-600 hover:text-indigo-800 font-medium"
-                >
-                  View all courses →
-                </Link>
-              </div>
-            </div>
-
-            <div className="bg-white shadow rounded-lg p-6">
-              <h2 className="text-lg font-semibold text-gray-900 mb-4">
-                Join the Conversation
-              </h2>
-              <div className="space-y-3">
-                <div className="flex items-center p-3 bg-gray-50 rounded-lg">
-                  <span className="text-xs font-medium text-gray-500 bg-gray-200 rounded-full px-2 py-1 mr-2">
-                    #blockchain
-                  </span>
-                  <span className="text-sm text-gray-600">
-                    348 active discussions
-                  </span>
-                </div>
-                <div className="flex items-center p-3 bg-gray-50 rounded-lg">
-                  <span className="text-xs font-medium text-gray-500 bg-gray-200 rounded-full px-2 py-1 mr-2">
-                    #machinelearning
-                  </span>
-                  <span className="text-sm text-gray-600">
-                    275 active discussions
-                  </span>
-                </div>
-                <div className="flex items-center p-3 bg-gray-50 rounded-lg">
-                  <span className="text-xs font-medium text-gray-500 bg-gray-200 rounded-full px-2 py-1 mr-2">
-                    #webdev
-                  </span>
-                  <span className="text-sm text-gray-600">
-                    412 active discussions
-                  </span>
-                </div>
-              </div>
-            </div>
+          <div className="lg:w-1/3 space-y-6">
+            <ProfilePreview />
+            <TrendingCourses courses={mockCourses.slice(0, 3)} />
+            <TrendingTopics />
           </div>
         </div>
       </div>
     </main>
+  );
+}
+
+interface Post {
+  id: string | number;
+  author: string;
+  timestamp: string;
+  title: string;
+  content: string;
+  tags?: string[];
+  likes: number;
+  comments: number;
+}
+
+function FeedCard({ post }: { post: Post }) {
+  return (
+    <Card className="overflow-hidden transition-all hover:shadow-md">
+      <CardHeader className="pb-2">
+        <div className="flex items-center space-x-3">
+          <Avatar>
+            <AvatarFallback className="bg-gradient-to-r from-indigo-500 to-purple-500 text-white">
+              {post.author.substring(0, 2)}
+            </AvatarFallback>
+          </Avatar>
+          <div>
+            <div className="font-semibold">{post.author}</div>
+            <div className="text-xs text-gray-500">{post.timestamp}</div>
+          </div>
+        </div>
+      </CardHeader>
+      <CardContent className="pb-2">
+        <h3 className="text-xl font-semibold mb-3">{post.title}</h3>
+        <p className="text-gray-600 dark:text-gray-300">{post.content}</p>
+
+        {post.tags && (
+          <div className="flex flex-wrap gap-2 mt-4">
+            {post.tags.map((tag, index) => (
+              <Badge
+                key={index}
+                variant="secondary"
+                className="bg-indigo-50 text-indigo-700 hover:bg-indigo-100"
+              >
+                #{tag}
+              </Badge>
+            ))}
+          </div>
+        )}
+      </CardContent>
+      <CardFooter className="pt-2 border-t border-gray-100 flex items-center justify-between">
+        <div className="flex items-center gap-4">
+          <Button
+            variant="ghost"
+            size="sm"
+            className="text-gray-500 hover:text-indigo-600 flex items-center gap-2"
+          >
+            <ThumbsUp size={18} /> {post.likes}
+          </Button>
+          <Button
+            variant="ghost"
+            size="sm"
+            className="text-gray-500 hover:text-indigo-600 flex items-center gap-2"
+          >
+            <MessageCircle size={18} /> {post.comments}
+          </Button>
+        </div>
+        <Button
+          variant="ghost"
+          size="sm"
+          className="text-gray-500 hover:text-indigo-600"
+        >
+          <Share2 size={18} />
+        </Button>
+      </CardFooter>
+    </Card>
+  );
+}
+
+function ProfilePreview() {
+  return (
+    <Card>
+      <CardContent className="p-5">
+        <div className="flex items-center space-x-4">
+          <Avatar className="h-16 w-16 border-4 border-white shadow-md">
+            <AvatarFallback className="bg-gradient-to-r from-indigo-500 to-purple-500 text-white text-xl">
+              US
+            </AvatarFallback>
+          </Avatar>
+          <div>
+            <h3 className="font-semibold text-lg">User</h3>
+            <p className="text-sm text-gray-500">Tech enthusiast</p>
+          </div>
+        </div>
+
+        <div className="mt-5 grid grid-cols-2 gap-2 text-center">
+          <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-3">
+            <div className="text-2xl font-bold text-indigo-600">12</div>
+            <div className="text-xs text-gray-500">Courses</div>
+          </div>
+          <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-3">
+            <div className="text-2xl font-bold text-indigo-600">48</div>
+            <div className="text-xs text-gray-500">Connections</div>
+          </div>
+        </div>
+
+        <div className="mt-5">
+          <Link href="/profile">
+            <Button variant="outline" className="w-full">
+              View Profile
+            </Button>
+          </Link>
+        </div>
+      </CardContent>
+    </Card>
+  );
+}
+
+interface Course {
+  id: string | number;
+  title: string;
+  instructor: string;
+  level: string;
+}
+
+function TrendingCourses({ courses }: { courses: Course[] }) {
+  return (
+    <Card>
+      <CardHeader className="pb-2">
+        <CardTitle className="flex items-center gap-2 text-lg">
+          <BookOpen size={20} className="text-indigo-600" />
+          Trending Courses
+        </CardTitle>
+      </CardHeader>
+      <CardContent className="pb-3">
+        <div className="space-y-4">
+          {courses.map((course) => (
+            <Link
+              key={course.id}
+              href={`/courses/${course.id}`}
+              className="block group"
+            >
+              <div className="flex items-center gap-3 p-2 rounded-lg transition-colors hover:bg-gray-50 dark:hover:bg-gray-800">
+                <div className="h-12 w-12 rounded-md bg-gradient-to-r from-indigo-500 to-purple-500 text-white flex items-center justify-center">
+                  <BookOpen size={20} />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <h3 className="font-medium text-gray-900 dark:text-gray-100 truncate group-hover:text-indigo-600 transition-colors">
+                    {course.title}
+                  </h3>
+                  <p className="text-xs text-gray-500 mt-1">
+                    {course.instructor} • {course.level}
+                  </p>
+                </div>
+              </div>
+            </Link>
+          ))}
+        </div>
+      </CardContent>
+      <CardFooter className="pt-0 border-t border-gray-100">
+        <Link
+          href="/courses"
+          className="text-sm text-indigo-600 hover:text-indigo-800 font-medium"
+        >
+          View all courses →
+        </Link>
+      </CardFooter>
+    </Card>
+  );
+}
+
+function TrendingTopics() {
+  const topics = [
+    { name: "blockchain", count: 348 },
+    { name: "machinelearning", count: 275 },
+    { name: "webdev", count: 412 },
+  ];
+
+  return (
+    <Card>
+      <CardHeader className="pb-2">
+        <CardTitle className="flex items-center gap-2 text-lg">
+          <Hash size={20} className="text-indigo-600" />
+          Join the Conversation
+        </CardTitle>
+      </CardHeader>
+      <CardContent>
+        <div className="space-y-3">
+          {topics.map((topic) => (
+            <Link href={`/topics/${topic.name}`} key={topic.name}>
+              <div className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800 rounded-lg transition-all hover:bg-indigo-50 dark:hover:bg-gray-700 hover:shadow-sm">
+                <div className="flex items-center gap-2">
+                  <Badge
+                    variant="outline"
+                    className="bg-white dark:bg-gray-700 text-indigo-600 border-indigo-200"
+                  >
+                    #{topic.name}
+                  </Badge>
+                </div>
+                <span className="text-sm text-gray-600 dark:text-gray-300 font-medium">
+                  {topic.count}{" "}
+                  <span className="text-gray-400 text-xs">discussions</span>
+                </span>
+              </div>
+            </Link>
+          ))}
+        </div>
+      </CardContent>
+    </Card>
   );
 }
