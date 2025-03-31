@@ -1,17 +1,60 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Navigation from "@/components/Navigation";
 import { mockCourses } from "@/lib/mock-data";
 import Link from "next/link";
 import { useAccount } from "wagmi";
 import { useLearnopolyContract } from "@/hooks/useLearnopolyContract";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+} from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Input } from "@/components/ui/input";
+import {
+  BookOpen,
+  Clock,
+  Users,
+  Star,
+  Search,
+  Filter,
+  PlusCircle,
+  Sparkles,
+  BarChart,
+  ChevronRight,
+  Globe,
+} from "lucide-react";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 export default function CoursesPage() {
   const [searchTerm, setSearchTerm] = useState("");
   const [filter, setFilter] = useState("all");
+  const [scrolled, setScrolled] = useState(false);
   const { address, isConnected } = useAccount();
   const { enrollInCourse, isPending } = useLearnopolyContract();
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 20);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   const filteredCourses = mockCourses.filter((course) => {
     const matchesSearch =
@@ -38,173 +81,313 @@ export default function CoursesPage() {
   };
 
   return (
-    <main className="min-h-screen bg-gray-50">
+    <main className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-950">
       <Navigation />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="flex flex-col md:flex-row items-center justify-between gap-4 mb-8">
-          <h1 className="text-2xl font-bold text-gray-900">Explore Courses</h1>
-
-          <div className="w-full md:w-auto flex flex-col md:flex-row gap-4">
-            <div className="relative">
-              <input
-                type="text"
-                placeholder="Search courses..."
-                className="w-full md:w-64 pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-              />
-              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <svg
-                  className="h-5 w-5 text-gray-400"
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
-                  aria-hidden="true"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
-                    clipRule="evenodd"
+      {/* Hero Section */}
+      <div className="bg-gradient-to-r from-indigo-600 to-purple-600 px-4 py-12 text-white">
+        <div className="max-w-7xl mx-auto">
+          <div className="max-w-3xl">
+            <h1 className="text-3xl md:text-4xl font-bold mb-4">
+              Expand Your Tech Skills
+            </h1>
+            <p className="text-lg text-indigo-100 mb-6">
+              Choose from hundreds of courses created by leading experts in the
+              tech industry.
+            </p>
+            <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-lg p-5">
+              <div className="flex flex-col md:flex-row gap-4">
+                <div className="relative flex-grow">
+                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-indigo-200" />
+                  <Input
+                    type="text"
+                    placeholder="Search for courses..."
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    className="pl-9 bg-white/10 border-white/20 text-white placeholder:text-indigo-200 w-full"
                   />
-                </svg>
+                </div>
+                <Select value={filter} onValueChange={setFilter}>
+                  <SelectTrigger className="w-full md:w-[180px] bg-white/10 border-white/20 text-white">
+                    <SelectValue placeholder="Difficulty level" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">All Levels</SelectItem>
+                    <SelectItem value="beginner">Beginner</SelectItem>
+                    <SelectItem value="intermediate">Intermediate</SelectItem>
+                    <SelectItem value="advanced">Advanced</SelectItem>
+                  </SelectContent>
+                </Select>
               </div>
             </div>
+          </div>
+        </div>
+      </div>
 
-            <select
-              className="w-full md:w-auto py-2 pl-3 pr-10 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
-              value={filter}
-              onChange={(e) => setFilter(e.target.value)}
-            >
-              <option value="all">All Levels</option>
-              <option value="beginner">Beginner</option>
-              <option value="intermediate">Intermediate</option>
-              <option value="advanced">Advanced</option>
-            </select>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <Tabs defaultValue="allCourses" className="mb-6">
+          <div className="flex justify-between items-center mb-6">
+            <TabsList className="bg-white dark:bg-gray-800 p-1 rounded-lg shadow-sm">
+              <TabsTrigger
+                value="allCourses"
+                className="data-[state=active]:bg-indigo-50 data-[state=active]:text-indigo-700"
+              >
+                All Courses
+              </TabsTrigger>
+              <TabsTrigger
+                value="popular"
+                className="data-[state=active]:bg-indigo-50 data-[state=active]:text-indigo-700"
+              >
+                Popular
+              </TabsTrigger>
+              <TabsTrigger
+                value="new"
+                className="data-[state=active]:bg-indigo-50 data-[state=active]:text-indigo-700"
+              >
+                New
+              </TabsTrigger>
+              <TabsTrigger
+                value="enrolled"
+                className="data-[state=active]:bg-indigo-50 data-[state=active]:text-indigo-700"
+              >
+                My Courses
+              </TabsTrigger>
+            </TabsList>
 
             {isConnected && (
-              <Link
-                href="/courses/create"
-                className="w-full md:w-auto inline-flex justify-center items-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-              >
-                Create Course
+              <Link href="/courses/create">
+                <Button className="hidden md:flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700">
+                  <PlusCircle size={16} />
+                  Create Course
+                </Button>
               </Link>
             )}
           </div>
-        </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredCourses.map((course) => (
-            <div
-              key={course.id}
-              className="bg-white shadow rounded-lg overflow-hidden"
-            >
-              <div className="h-40 bg-indigo-100 flex items-center justify-center">
-                <div className="h-20 w-20 rounded-full bg-indigo-200 flex items-center justify-center">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-10 w-10 text-indigo-600"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
-                    />
-                  </svg>
-                </div>
-              </div>
-
-              <div className="p-6">
-                <div className="flex items-center justify-between mb-2">
-                  <span className="text-xs font-medium text-white bg-indigo-600 rounded-full px-2 py-1">
-                    {course.level}
-                  </span>
-                  <div className="flex items-center">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="h-4 w-4 text-yellow-400"
-                      viewBox="0 0 20 20"
-                      fill="currentColor"
-                    >
-                      <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                    </svg>
-                    <span className="ml-1 text-sm text-gray-600">
-                      {course.rating}
-                    </span>
-                  </div>
-                </div>
-
-                <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                  {course.title}
-                </h3>
-                <p className="text-sm text-gray-600 mb-4">
-                  {course.description}
-                </p>
-
-                <div className="flex items-center text-sm text-gray-500 mb-4">
-                  <div className="flex items-center mr-4">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="h-4 w-4 mr-1"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
-                      />
-                    </svg>
-                    {course.duration}
-                  </div>
-                  <div className="flex items-center">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="h-4 w-4 mr-1"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"
-                      />
-                    </svg>
-                    {course.students.toLocaleString()} students
-                  </div>
-                </div>
-
-                <div className="border-t border-gray-100 pt-4 flex flex-col sm:flex-row items-center justify-between gap-3">
-                  <div className="flex items-center">
-                    <div className="h-8 w-8 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-600 font-semibold">
-                      {course.instructor.substring(0, 2)}
-                    </div>
-                    <span className="ml-2 text-sm text-gray-600">
-                      {course.instructor}
-                    </span>
-                  </div>
-
-                  <button
-                    onClick={() => handleEnroll(course.id)}
-                    disabled={isPending}
-                    className="w-full sm:w-auto py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50"
-                  >
-                    {isPending ? "Enrolling..." : "Enroll Now"}
-                  </button>
-                </div>
-              </div>
+          <TabsContent value="allCourses" className="m-0">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {filteredCourses.map((course) => (
+                <CourseCard
+                  key={course.id}
+                  course={course}
+                  onEnroll={handleEnroll}
+                  isPending={isPending}
+                />
+              ))}
             </div>
-          ))}
+          </TabsContent>
+
+          <TabsContent value="popular" className="m-0">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {filteredCourses
+                .sort((a, b) => b.students - a.students)
+                .slice(0, 6)
+                .map((course) => (
+                  <CourseCard
+                    key={course.id}
+                    course={course}
+                    onEnroll={handleEnroll}
+                    isPending={isPending}
+                  />
+                ))}
+            </div>
+          </TabsContent>
+
+          <TabsContent value="new" className="m-0">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {filteredCourses.slice(0, 3).map((course) => (
+                <CourseCard
+                  key={course.id}
+                  course={course}
+                  onEnroll={handleEnroll}
+                  isPending={isPending}
+                  isNew={true}
+                />
+              ))}
+            </div>
+          </TabsContent>
+
+          <TabsContent value="enrolled" className="m-0">
+            <div className="text-center py-12">
+              <div className="w-20 h-20 mx-auto mb-4 bg-indigo-50 rounded-full flex items-center justify-center">
+                <BookOpen size={32} className="text-indigo-500" />
+              </div>
+              <h3 className="text-xl font-medium text-gray-900 mb-2">
+                You haven't enrolled in any courses yet
+              </h3>
+              <p className="text-gray-500 mb-6 max-w-md mx-auto">
+                Browse our catalog and find the perfect course to start your
+                learning journey.
+              </p>
+              <Button className="bg-indigo-600 hover:bg-indigo-700">
+                Explore Courses
+              </Button>
+            </div>
+          </TabsContent>
+        </Tabs>
+
+        {/* Featured categories */}
+        <div className="mt-16">
+          <h2 className="text-2xl font-bold text-gray-900 mb-6">
+            Popular Categories
+          </h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
+            <CategoryCard
+              title="Web Development"
+              count={37}
+              icon={<Globe size={18} />}
+              color="from-blue-500 to-cyan-500"
+              href="/courses?category=web"
+            />
+            <CategoryCard
+              title="Blockchain & Web3"
+              count={24}
+              icon={<Sparkles size={18} />}
+              color="from-purple-500 to-pink-500"
+              href="/courses?category=blockchain"
+            />
+            <CategoryCard
+              title="Data Science"
+              count={42}
+              icon={<BarChart size={18} />}
+              color="from-green-500 to-emerald-500"
+              href="/courses?category=data"
+            />
+            <CategoryCard
+              title="AI & Machine Learning"
+              count={28}
+              icon={<Sparkles size={18} />}
+              color="from-amber-500 to-orange-500"
+              href="/courses?category=ai"
+            />
+          </div>
         </div>
       </div>
     </main>
+  );
+}
+
+interface Course {
+  id: number;
+  title: string;
+  description: string;
+  instructor: string;
+  level: string;
+  rating: number;
+  duration: string;
+  students: number;
+}
+
+function CourseCard({
+  course,
+  onEnroll,
+  isPending,
+  isNew = false,
+}: {
+  course: Course;
+  onEnroll: (courseId: number) => void;
+  isPending: boolean;
+  isNew?: boolean;
+}) {
+  return (
+    <Card className="overflow-hidden transition-all hover:shadow-md border-none shadow-lg h-full flex flex-col">
+      <div className="relative">
+        <div className="h-40 bg-gradient-to-br from-indigo-500 to-purple-500 flex items-center justify-center">
+          <BookOpen size={40} className="text-white" />
+        </div>
+        {isNew && (
+          <div className="absolute top-4 right-4">
+            <Badge className="bg-green-500 hover:bg-green-600">New</Badge>
+          </div>
+        )}
+        <div className="absolute -bottom-6 right-6">
+          <div className="bg-white rounded-full h-12 w-12 shadow-lg flex items-center justify-center">
+            <Avatar>
+              <AvatarFallback className="bg-indigo-100 text-indigo-600 font-semibold">
+                {course.instructor.substring(0, 2)}
+              </AvatarFallback>
+            </Avatar>
+          </div>
+        </div>
+      </div>
+
+      <CardHeader className="pt-6 pb-2">
+        <div className="flex justify-between items-start">
+          <Badge
+            variant="outline"
+            className="bg-indigo-50 text-indigo-700 border-indigo-200"
+          >
+            {course.level}
+          </Badge>
+          <div className="flex items-center">
+            <Star size={14} className="text-yellow-400 fill-yellow-400" />
+            <span className="ml-1 text-sm text-gray-600">{course.rating}</span>
+          </div>
+        </div>
+        <CardTitle className="text-xl mt-2">{course.title}</CardTitle>
+        <CardDescription className="text-gray-600">
+          by{" "}
+          <span className="font-medium text-gray-700">{course.instructor}</span>
+        </CardDescription>
+      </CardHeader>
+
+      <CardContent className="py-2 flex-grow">
+        <p className="text-gray-600 text-sm line-clamp-3">
+          {course.description}
+        </p>
+
+        <div className="flex items-center gap-4 mt-4 text-sm text-gray-500">
+          <div className="flex items-center">
+            <Clock size={14} className="mr-1 text-gray-400" />
+            {course.duration}
+          </div>
+          <div className="flex items-center">
+            <Users size={14} className="mr-1 text-gray-400" />
+            {course.students.toLocaleString()}
+          </div>
+        </div>
+      </CardContent>
+
+      <CardFooter className="pt-2 border-t">
+        <Button
+          onClick={() => onEnroll(course.id)}
+          disabled={isPending}
+          className="w-full bg-indigo-600 hover:bg-indigo-700"
+        >
+          {isPending ? "Enrolling..." : "Enroll Now"}
+        </Button>
+      </CardFooter>
+    </Card>
+  );
+}
+
+interface CategoryCardProps {
+  title: string;
+  count: number;
+  icon: React.ReactNode;
+  color: string;
+  href: string;
+}
+
+function CategoryCard({ title, count, icon, color, href }: CategoryCardProps) {
+  return (
+    <Link href={href}>
+      <Card className="overflow-hidden transition-all hover:shadow-md border-none shadow-lg group h-full">
+        <CardContent className="p-0">
+          <div
+            className={`bg-gradient-to-r ${color} p-6 text-white flex flex-col h-full`}
+          >
+            <div className="bg-white/20 w-10 h-10 rounded-full flex items-center justify-center mb-4">
+              {icon}
+            </div>
+            <h3 className="text-lg font-semibold mb-1">{title}</h3>
+            <p className="text-sm text-white/80 mb-4">{count} courses</p>
+            <div className="mt-auto flex items-center text-sm font-medium group-hover:translate-x-1 transition-transform">
+              Browse courses <ChevronRight size={16} className="ml-1" />
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+    </Link>
   );
 }

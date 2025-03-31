@@ -1,11 +1,35 @@
 "use client";
 
-import { WagmiProvider, createConfig } from "wagmi";
+import { WagmiProvider, createConfig, http } from "wagmi";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { injected } from "wagmi/connectors";
 import { mainnet, sepolia } from "wagmi/chains";
-import { eduChain } from "@/lib/chain";
 import { ReactNode } from "react";
+
+// Define EduChain chain configuration
+export const eduChain = {
+  id: 656476,
+  name: "EduChain Testnet",
+  nativeCurrency: {
+    name: "EduChain",
+    symbol: "EDU",
+    decimals: 18,
+  },
+  rpcUrls: {
+    default: {
+      http: ["https://rpc.open-campus-codex.gelato.digital"],
+    },
+    public: {
+      http: ["https://rpc.open-campus-codex.gelato.digital"],
+    },
+  },
+  blockExplorers: {
+    default: {
+      name: "EduChain Explorer",
+      url: "https://edu-chain-testnet.blockscout.com",
+    },
+  },
+};
 
 // Replace with actual contract address after deployment
 export const LEARNOPOLY_CONTRACT_ADDRESS =
@@ -13,12 +37,13 @@ export const LEARNOPOLY_CONTRACT_ADDRESS =
 
 const queryClient = new QueryClient();
 
+// Creating the wagmi config with proper transports
 const config = createConfig({
   chains: [eduChain, mainnet, sepolia],
   transports: {
-    [eduChain.id]: injected("https://rpc.open-campus-codex.gelato.digital"),
-    [mainnet.id]: injected(),
-    [sepolia.id]: injected(),
+    [eduChain.id]: http("https://rpc.open-campus-codex.gelato.digital"),
+    [mainnet.id]: http(),
+    [sepolia.id]: http(),
   },
   connectors: [injected()],
 });
