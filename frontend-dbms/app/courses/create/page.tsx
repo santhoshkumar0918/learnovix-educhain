@@ -310,349 +310,358 @@ export default function CreateCoursePage() {
               </CardHeader>
 
               <form onSubmit={handleSubmit}>
-                <TabsContent value="basic" className="m-0">
-                  <CardContent className="space-y-6">
-                    <div className="space-y-2">
-                      <Label htmlFor="title">Course Title</Label>
-                      <Input
-                        id="title"
-                        name="title"
-                        value={courseData.title}
-                        onChange={handleInputChange}
-                        placeholder="e.g., Introduction to Blockchain Development"
-                        required
-                      />
-                    </div>
-
-                    <div className="space-y-2">
-                      <Label htmlFor="description">Course Description</Label>
-                      <Textarea
-                        id="description"
-                        name="description"
-                        value={courseData.description}
-                        onChange={handleInputChange}
-                        placeholder="Provide a detailed description of your course..."
-                        rows={6}
-                        required
-                      />
-                    </div>
-
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {/* Important: The Tabs component needs to wrap the TabsContent components */}
+                <Tabs value={activeTab} onValueChange={setActiveTab}>
+                  <TabsContent value="basic" className="m-0">
+                    <CardContent className="space-y-6">
                       <div className="space-y-2">
-                        <Label htmlFor="level">Difficulty Level</Label>
-                        <Select
-                          value={courseData.level}
-                          onValueChange={(value) =>
-                            handleSelectChange("level", value)
-                          }
-                        >
-                          <SelectTrigger>
-                            <SelectValue placeholder="Select level" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value="Beginner">Beginner</SelectItem>
-                            <SelectItem value="Intermediate">
-                              Intermediate
-                            </SelectItem>
-                            <SelectItem value="Advanced">Advanced</SelectItem>
-                          </SelectContent>
-                        </Select>
+                        <Label htmlFor="title">Course Title</Label>
+                        <Input
+                          id="title"
+                          name="title"
+                          value={courseData.title}
+                          onChange={handleInputChange}
+                          placeholder="e.g., Introduction to Blockchain Development"
+                          required
+                        />
                       </div>
 
                       <div className="space-y-2">
-                        <Label htmlFor="category">Category</Label>
-                        <Select
-                          value={courseData.category}
-                          onValueChange={(value) =>
-                            handleSelectChange("category", value)
-                          }
-                        >
-                          <SelectTrigger>
-                            <SelectValue placeholder="Select category" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value="web-development">
-                              Web Development
-                            </SelectItem>
-                            <SelectItem value="blockchain">
-                              Blockchain & Web3
-                            </SelectItem>
-                            <SelectItem value="data-science">
-                              Data Science
-                            </SelectItem>
-                            <SelectItem value="machine-learning">
-                              AI & Machine Learning
-                            </SelectItem>
-                            <SelectItem value="mobile-development">
-                              Mobile Development
-                            </SelectItem>
-                            <SelectItem value="devops">
-                              DevOps & Cloud
-                            </SelectItem>
-                          </SelectContent>
-                        </Select>
+                        <Label htmlFor="description">Course Description</Label>
+                        <Textarea
+                          id="description"
+                          name="description"
+                          value={courseData.description}
+                          onChange={handleInputChange}
+                          placeholder="Provide a detailed description of your course..."
+                          rows={6}
+                          required
+                        />
                       </div>
-                    </div>
 
-                    <div className="space-y-2">
-                      <Label htmlFor="duration">Course Duration</Label>
-                      <Select
-                        value={courseData.duration}
-                        onValueChange={(value) =>
-                          handleSelectChange("duration", value)
-                        }
-                      >
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select duration" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="1-2 hours">1-2 hours</SelectItem>
-                          <SelectItem value="3-5 hours">3-5 hours</SelectItem>
-                          <SelectItem value="1 week">1 week</SelectItem>
-                          <SelectItem value="2 weeks">2 weeks</SelectItem>
-                          <SelectItem value="4 weeks">4 weeks</SelectItem>
-                          <SelectItem value="8+ weeks">8+ weeks</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div className="space-y-2">
+                          <Label htmlFor="level">Difficulty Level</Label>
+                          <Select
+                            value={courseData.level}
+                            onValueChange={(value) =>
+                              handleSelectChange("level", value)
+                            }
+                          >
+                            <SelectTrigger>
+                              <SelectValue placeholder="Select level" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectItem value="Beginner">Beginner</SelectItem>
+                              <SelectItem value="Intermediate">
+                                Intermediate
+                              </SelectItem>
+                              <SelectItem value="Advanced">Advanced</SelectItem>
+                            </SelectContent>
+                          </Select>
+                        </div>
 
-                    <div className="space-y-2">
-                      <Label>Course Thumbnail</Label>
-                      <div className="border border-dashed border-gray-300 rounded-lg p-8 text-center">
-                        <div className="mx-auto flex flex-col items-center">
-                          <ImageIcon className="h-10 w-10 text-gray-400 mb-2" />
-                          <p className="text-sm text-gray-500 mb-3">
-                            Drag and drop an image, or click to browse
-                          </p>
-                          <Button variant="outline" size="sm" className="gap-2">
-                            <Upload size={14} />
-                            Upload Image
-                          </Button>
+                        <div className="space-y-2">
+                          <Label htmlFor="category">Category</Label>
+                          <Select
+                            value={courseData.category}
+                            onValueChange={(value) =>
+                              handleSelectChange("category", value)
+                            }
+                          >
+                            <SelectTrigger>
+                              <SelectValue placeholder="Select category" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectItem value="web-development">
+                                Web Development
+                              </SelectItem>
+                              <SelectItem value="blockchain">
+                                Blockchain & Web3
+                              </SelectItem>
+                              <SelectItem value="data-science">
+                                Data Science
+                              </SelectItem>
+                              <SelectItem value="machine-learning">
+                                AI & Machine Learning
+                              </SelectItem>
+                              <SelectItem value="mobile-development">
+                                Mobile Development
+                              </SelectItem>
+                              <SelectItem value="devops">
+                                DevOps & Cloud
+                              </SelectItem>
+                            </SelectContent>
+                          </Select>
                         </div>
                       </div>
-                    </div>
-                  </CardContent>
-                </TabsContent>
 
-                <TabsContent value="curriculum" className="m-0">
-                  <CardContent className="space-y-6">
-                    <div className="space-y-6">
-                      {courseData.sections.map((section, sIndex) => (
-                        <div
-                          key={sIndex}
-                          className="border border-gray-200 rounded-lg overflow-hidden"
+                      <div className="space-y-2">
+                        <Label htmlFor="duration">Course Duration</Label>
+                        <Select
+                          value={courseData.duration}
+                          onValueChange={(value) =>
+                            handleSelectChange("duration", value)
+                          }
                         >
-                          <div className="bg-gray-50 p-4 flex justify-between items-center">
-                            <div className="flex-1">
-                              <Input
-                                value={section.title}
-                                onChange={(e) =>
-                                  updateSectionTitle(sIndex, e.target.value)
-                                }
-                                className="border-0 bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 p-0 text-base font-medium"
-                                placeholder="Section title"
-                              />
-                            </div>
-                            <div className="flex items-center gap-2">
-                              <Button
-                                type="button"
-                                variant="ghost"
-                                size="sm"
-                                onClick={() => removeSection(sIndex)}
-                                className="text-gray-500 hover:text-red-500"
-                              >
-                                <Trash2 size={16} />
-                              </Button>
-                            </div>
-                          </div>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Select duration" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="1-2 hours">1-2 hours</SelectItem>
+                            <SelectItem value="3-5 hours">3-5 hours</SelectItem>
+                            <SelectItem value="1 week">1 week</SelectItem>
+                            <SelectItem value="2 weeks">2 weeks</SelectItem>
+                            <SelectItem value="4 weeks">4 weeks</SelectItem>
+                            <SelectItem value="8+ weeks">8+ weeks</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
 
-                          <div className="p-4 space-y-3">
-                            {section.lessons.map((lesson, lIndex) => (
-                              <div
-                                key={lIndex}
-                                className="flex flex-col gap-2 p-3 bg-gray-50 rounded-md"
-                              >
-                                <div className="flex items-center justify-between">
-                                  <Input
-                                    value={lesson.title}
+                      <div className="space-y-2">
+                        <Label>Course Thumbnail</Label>
+                        <div className="border border-dashed border-gray-300 rounded-lg p-8 text-center">
+                          <div className="mx-auto flex flex-col items-center">
+                            <ImageIcon className="h-10 w-10 text-gray-400 mb-2" />
+                            <p className="text-sm text-gray-500 mb-3">
+                              Drag and drop an image, or click to browse
+                            </p>
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              className="gap-2"
+                            >
+                              <Upload size={14} />
+                              Upload Image
+                            </Button>
+                          </div>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </TabsContent>
+
+                  <TabsContent value="curriculum" className="m-0">
+                    <CardContent className="space-y-6">
+                      <div className="space-y-6">
+                        {courseData.sections.map((section, sIndex) => (
+                          <div
+                            key={sIndex}
+                            className="border border-gray-200 rounded-lg overflow-hidden"
+                          >
+                            <div className="bg-gray-50 p-4 flex justify-between items-center">
+                              <div className="flex-1">
+                                <Input
+                                  value={section.title}
+                                  onChange={(e) =>
+                                    updateSectionTitle(sIndex, e.target.value)
+                                  }
+                                  className="border-0 bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 p-0 text-base font-medium"
+                                  placeholder="Section title"
+                                />
+                              </div>
+                              <div className="flex items-center gap-2">
+                                <Button
+                                  type="button"
+                                  variant="ghost"
+                                  size="sm"
+                                  onClick={() => removeSection(sIndex)}
+                                  className="text-gray-500 hover:text-red-500"
+                                >
+                                  <Trash2 size={16} />
+                                </Button>
+                              </div>
+                            </div>
+
+                            <div className="p-4 space-y-3">
+                              {section.lessons.map((lesson, lIndex) => (
+                                <div
+                                  key={lIndex}
+                                  className="flex flex-col gap-2 p-3 bg-gray-50 rounded-md"
+                                >
+                                  <div className="flex items-center justify-between">
+                                    <Input
+                                      value={lesson.title}
+                                      onChange={(e) =>
+                                        updateLessonTitle(
+                                          sIndex,
+                                          lIndex,
+                                          e.target.value
+                                        )
+                                      }
+                                      className="border-0 bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 p-0 text-sm"
+                                      placeholder="Lesson title"
+                                    />
+                                    <Button
+                                      type="button"
+                                      variant="ghost"
+                                      size="sm"
+                                      onClick={() =>
+                                        removeLesson({
+                                          sectionIndex: sIndex,
+                                          lessonIndex: lIndex,
+                                        })
+                                      }
+                                      className="text-gray-500 hover:text-red-500"
+                                    >
+                                      <Trash2 size={14} />
+                                    </Button>
+                                  </div>
+                                  <Textarea
+                                    value={lesson.description}
                                     onChange={(e) =>
-                                      updateLessonTitle(
+                                      updateLessonDescription(
                                         sIndex,
                                         lIndex,
                                         e.target.value
                                       )
                                     }
-                                    className="border-0 bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 p-0 text-sm"
-                                    placeholder="Lesson title"
+                                    placeholder="Lesson description (optional)"
+                                    className="text-xs border-0 bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 resize-none min-h-0 h-10"
                                   />
-                                  <Button
-                                    type="button"
-                                    variant="ghost"
-                                    size="sm"
-                                    onClick={() =>
-                                      removeLesson({
-                                        sectionIndex: sIndex,
-                                        lessonIndex: lIndex,
-                                      })
-                                    }
-                                    className="text-gray-500 hover:text-red-500"
-                                  >
-                                    <Trash2 size={14} />
-                                  </Button>
                                 </div>
-                                <Textarea
-                                  value={lesson.description}
-                                  onChange={(e) =>
-                                    updateLessonDescription(
-                                      sIndex,
-                                      lIndex,
-                                      e.target.value
-                                    )
-                                  }
-                                  placeholder="Lesson description (optional)"
-                                  className="text-xs border-0 bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 resize-none min-h-0 h-10"
-                                />
-                              </div>
-                            ))}
+                              ))}
 
-                            <Button
-                              type="button"
-                              variant="outline"
-                              size="sm"
-                              onClick={() => addLesson(sIndex)}
-                              className="mt-3 w-full gap-2"
-                            >
-                              <Plus size={14} />
-                              Add Lesson
-                            </Button>
+                              <Button
+                                type="button"
+                                variant="outline"
+                                size="sm"
+                                onClick={() => addLesson(sIndex)}
+                                className="mt-3 w-full gap-2"
+                              >
+                                <Plus size={14} />
+                                Add Lesson
+                              </Button>
+                            </div>
                           </div>
-                        </div>
-                      ))}
+                        ))}
 
-                      <Button
-                        type="button"
-                        variant="outline"
-                        onClick={addSection}
-                        className="w-full gap-2"
-                      >
-                        <Plus size={16} />
-                        Add Section
-                      </Button>
-                    </div>
-                  </CardContent>
-                </TabsContent>
+                        <Button
+                          type="button"
+                          variant="outline"
+                          onClick={addSection}
+                          className="w-full gap-2"
+                        >
+                          <Plus size={16} />
+                          Add Section
+                        </Button>
+                      </div>
+                    </CardContent>
+                  </TabsContent>
 
-                <TabsContent value="pricing" className="m-0">
-                  <CardContent className="space-y-6">
-                    <div className="space-y-4">
-                      <div className="space-y-2">
-                        <Label htmlFor="price">Course Price</Label>
-                        <div className="relative">
-                          <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500">
-                            $
-                          </span>
-                          <Input
-                            id="price"
-                            name="price"
-                            type="number"
-                            placeholder="0.00"
-                            min="0"
-                            step="0.01"
-                            className="pl-8"
-                          />
+                  <TabsContent value="pricing" className="m-0">
+                    <CardContent className="space-y-6">
+                      <div className="space-y-4">
+                        <div className="space-y-2">
+                          <Label htmlFor="price">Course Price</Label>
+                          <div className="relative">
+                            <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500">
+                              $
+                            </span>
+                            <Input
+                              id="price"
+                              name="price"
+                              type="number"
+                              placeholder="0.00"
+                              min="0"
+                              step="0.01"
+                              className="pl-8"
+                            />
+                          </div>
+                          <p className="text-xs text-gray-500">
+                            Leave at 0 for a free course
+                          </p>
                         </div>
-                        <p className="text-xs text-gray-500">
-                          Leave at 0 for a free course
+
+                        <div className="space-y-2">
+                          <Label htmlFor="isPublished">Publish Status</Label>
+                          <Select defaultValue="draft">
+                            <SelectTrigger>
+                              <SelectValue placeholder="Select status" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectItem value="draft">
+                                Draft (Save Now, Publish Later)
+                              </SelectItem>
+                              <SelectItem value="published">
+                                Published (Available Immediately)
+                              </SelectItem>
+                            </SelectContent>
+                          </Select>
+                        </div>
+                      </div>
+
+                      <div className="bg-indigo-50 border border-indigo-100 rounded-lg p-4 text-indigo-800">
+                        <h3 className="text-sm font-medium mb-2">
+                          Publishing Information
+                        </h3>
+                        <p className="text-xs">
+                          Draft courses can be previewed and edited before
+                          making them available to students. Published courses
+                          will be immediately visible in search results and the
+                          course catalog.
                         </p>
                       </div>
+                    </CardContent>
+                  </TabsContent>
 
-                      <div className="space-y-2">
-                        <Label htmlFor="isPublished">Publish Status</Label>
-                        <Select defaultValue="draft">
-                          <SelectTrigger>
-                            <SelectValue placeholder="Select status" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value="draft">
-                              Draft (Save Now, Publish Later)
-                            </SelectItem>
-                            <SelectItem value="published">
-                              Published (Available Immediately)
-                            </SelectItem>
-                          </SelectContent>
-                        </Select>
-                      </div>
-                    </div>
-
-                    <div className="bg-indigo-50 border border-indigo-100 rounded-lg p-4 text-indigo-800">
-                      <h3 className="text-sm font-medium mb-2">
-                        Publishing Information
-                      </h3>
-                      <p className="text-xs">
-                        Draft courses can be previewed and edited before making
-                        them available to students. Published courses will be
-                        immediately visible in search results and the course
-                        catalog.
-                      </p>
-                    </div>
-                  </CardContent>
-                </TabsContent>
-
-                <TabsContent value="review" className="m-0">
-                  <CardContent className="space-y-6">
-                    <div className="border border-gray-200 rounded-lg p-6 space-y-4">
-                      <div>
-                        <h3 className="text-lg font-medium">
-                          {courseData.title || "Course Title"}
-                        </h3>
-                        <div className="flex items-center gap-3 mt-2 text-sm text-gray-500">
-                          <span className="bg-indigo-100 text-indigo-800 rounded-full px-2 py-0.5 text-xs font-medium">
-                            {courseData.level}
-                          </span>
-                          <div className="flex items-center">
-                            <Clock size={14} className="mr-1" />
-                            {courseData.duration}
+                  <TabsContent value="review" className="m-0">
+                    <CardContent className="space-y-6">
+                      <div className="border border-gray-200 rounded-lg p-6 space-y-4">
+                        <div>
+                          <h3 className="text-lg font-medium">
+                            {courseData.title || "Course Title"}
+                          </h3>
+                          <div className="flex items-center gap-3 mt-2 text-sm text-gray-500">
+                            <span className="bg-indigo-100 text-indigo-800 rounded-full px-2 py-0.5 text-xs font-medium">
+                              {courseData.level}
+                            </span>
+                            <div className="flex items-center">
+                              <Clock size={14} className="mr-1" />
+                              {courseData.duration}
+                            </div>
                           </div>
                         </div>
+                        <p className="text-gray-600">
+                          {courseData.description ||
+                            "Course description will appear here."}
+                        </p>
+                        <div>
+                          <h4 className="font-medium mb-2">
+                            Curriculum Overview
+                          </h4>
+                          <ul className="space-y-2">
+                            {courseData.sections.map((section, i) => (
+                              <li key={i}>
+                                <div className="font-medium">
+                                  {section.title}
+                                </div>
+                                <div className="text-sm text-gray-500">
+                                  {section.lessons.length} lesson
+                                  {section.lessons.length !== 1 ? "s" : ""}
+                                </div>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
                       </div>
-                      <p className="text-gray-600">
-                        {courseData.description ||
-                          "Course description will appear here."}
-                      </p>
-                      <div>
-                        <h4 className="font-medium mb-2">
-                          Curriculum Overview
-                        </h4>
-                        <ul className="space-y-2">
-                          {courseData.sections.map((section, i) => (
-                            <li key={i}>
-                              <div className="font-medium">{section.title}</div>
-                              <div className="text-sm text-gray-500">
-                                {section.lessons.length} lesson
-                                {section.lessons.length !== 1 ? "s" : ""}
-                              </div>
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                    </div>
 
-                    <div className="bg-amber-50 border border-amber-100 rounded-lg p-4 text-amber-800">
-                      <h3 className="text-sm font-medium mb-2">
-                        Ready to Publish?
-                      </h3>
-                      <p className="text-xs mb-2">
-                        Before publishing your course, please review all details
-                        carefully. Once published, your course will be available
-                        to students.
-                      </p>
-                      <p className="text-xs font-medium">
-                        By publishing, you confirm that all content is your
-                        original work or you have permission to use it.
-                      </p>
-                    </div>
-                  </CardContent>
-                </TabsContent>
+                      <div className="bg-amber-50 border border-amber-100 rounded-lg p-4 text-amber-800">
+                        <h3 className="text-sm font-medium mb-2">
+                          Ready to Publish?
+                        </h3>
+                        <p className="text-xs mb-2">
+                          Before publishing your course, please review all
+                          details carefully. Once published, your course will be
+                          available to students.
+                        </p>
+                        <p className="text-xs font-medium">
+                          By publishing, you confirm that all content is your
+                          original work or you have permission to use it.
+                        </p>
+                      </div>
+                    </CardContent>
+                  </TabsContent>
+                </Tabs>
 
                 <CardFooter className="justify-between border-t pt-6">
                   <Button
