@@ -334,13 +334,14 @@ export default function CoursesPage() {
                 </p>
                 <Button
                   className="bg-indigo-600 hover:bg-indigo-700"
-                  onClick={() =>
-                    document
-                      .querySelector(
-                        '[data-state="inactive"][value="allCourses"]'
-                      )
-                      ?.click()
-                  }
+                  onClick={() => {
+                    const element = document.querySelector(
+                      '[data-state="inactive"][value="all"]'
+                    );
+                    if (element) {
+                      (element as HTMLElement).click();
+                    }
+                  }}
                 >
                   Explore Courses
                 </Button>
