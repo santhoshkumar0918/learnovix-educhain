@@ -23,7 +23,6 @@ export const useCourses = () => {
   }) => {
     setIsLoading(true);
     setError(null);
-
     try {
       let query = supabase
         .from("courses")
